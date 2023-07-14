@@ -4,8 +4,16 @@ class AuthorSerializer < ActiveModel::Serializer
   has_one :profile
   has_many :posts
 
-  def name
-    object.name
+  class ProfileSerializer < ActiveModel::Serializer
+    attributes :username, :email, :bio, :avatar_url
+  end
+
+  class PostSerializer < ActiveModel::Serializer
+    attributes :title, :short_content
+    has_many :tags
+
+    def short_content
+      object.content.truncate(40)
+    end
   end
 end
-
